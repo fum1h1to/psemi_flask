@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>psemi</title>
+</head>
+<body>
+    <h1>20FI057 須藤文仁</h1>
+    <section>
+        <h2>2</h2>
+        <ul>
+            {% for i in context['nums'] %}
+            <li>{{ i }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+    <section>
+        <h2>3</h2>
+        <ul>
+            {% for key, value in context['likeDict'].items() %}
+            <li>{{ key }}は{{ value }}です。</li>
+            {% endfor %}
+        </ul>
+    </section>
+    <section>
+        <h2>4</h2>
+        {% if context['flag'] %}
+        <p>flag is true!!!!!</p>
+        {% else %}
+        <p>flag is false!!!!</p>
+        {% endif %}
+    </section>
+
+    <script type="text/javascript" src="/static/js/script.js"></script>
+</body>
+</html>

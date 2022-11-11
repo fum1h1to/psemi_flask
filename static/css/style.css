@@ -1,0 +1,9 @@
+h1 {
+    text-shadow: 5px 5px 5px #666;
+    color: #f00
+}
+
+h2 {
+    text-decoration: underline;
+    transform: rotate(180deg) translateX(98%);
+}
