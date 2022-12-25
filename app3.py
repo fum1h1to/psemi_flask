@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
+import hashlib
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///sample.db"
@@ -10,31 +11,33 @@ class user_db(db.Model):
     name = db.Column(db.String(128), nullable=False)
     password = db.Column(db.String(128), nullable=False)
 
-# @app.route("/")
-# def index():
+@app.route("/")
+def index():
+    users = user_db.query.all()
+    
+    return render_template('index3.html', users=users)
 
-#     context = {
-#         'nums': list(range(9+1)),
-#         'likeDict': {
-#             '好きな色' : '青',
-#             '好きなOS' : 'Linux',
-#             '好きな言語' : 'Python',
-#         },
-#         'flag' : True
-#     }
-#     return render_template('index.html', context=context)
+@app.route('/add', methods=['POST'])
+def add():
+    name = request.form['name']
+    password = request.form['password']
 
-# @app.route('/routing')
-# def routing():
-#     return render_template('routing.html')
+    new_item = user_db(name=name, password=str(hashlib.sha256(password.encode()).hexdigest()))
+    db.session.add(new_item)
+    db.session.commit()
 
-# @app.route('/get', methods=['GET'])
-# def send_get():
-#     text = request.args.get('text')
-#     print(text)
-#     return render_template('get.html', receive_data=text)
+    return redirect('/')
+
+@app.route('/remove/<id>', methods=['GET'])
+def remove(id):
+    exists = user_db.query.filter_by(id=id).first()
+    db.session.delete(exists)
+    db.session.commit()
+
+    return redirect('/')
 
 
 if __name__ == "__main__":
-    db.create_all()
-    # app.run(port=8080, debug=True)
+    # with app.app_context():
+        # db.create_all()
+    app.run(port=8080, debug=True)
